@@ -3,17 +3,28 @@ require('dotenv').config();
 
 let sequelize;
 
-if (process.env.JAWSDB_URL) {
-  sequelize = new Sequelize(process.env.JAWSDB_URL);
+if (process.env.DATABASE_URL) {
+  // Use PostgreSQL connection URL from Heroku's environment variable
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // Needed for Heroku SSL connections
+      },
+    },
+  });
 } else {
+  // Local PostgreSQL connection
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
     {
       host: 'localhost',
-      dialect: 'mysql',
-      port: 3306
+      dialect: 'postgres', // Use 'postgres' instead of 'mysql'
+      port: 5432, // Default PostgreSQL port
     }
   );
 }

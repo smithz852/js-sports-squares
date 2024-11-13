@@ -70,7 +70,7 @@ function getGameList(currentTime) {
     })
     .then(function (data) {
       console.log("Game List: ", data);
-      selectGame(data);
+      selectGame(data, currentTime);
     });
 }
 
@@ -289,7 +289,7 @@ function renderGameInfo(data) {
   refreshFetch(scoreId);
 }
 
-function selectGame(data) {
+function selectGame(data, currentTime) {
     document.getElementById("clearOpenBtn").classList.add('hide');
 document.getElementById("clearBtn").classList.add('hide')
 document.getElementById("startBtn").classList.add('hide')
@@ -302,7 +302,9 @@ document.querySelector('.X-box').classList.add('.xText');
   if (data.statusCode === 400) {
     console.log('no games available')
     let noGame = document.createElement('h4')
+    let noGameTime = document.createElement('h4')
     noGame.textContent = 'No Games Available'
+    noGameTime.textContent = `Simulation Time: ${currentTime}`
     gameChoice.appendChild(noGame)
   }
   

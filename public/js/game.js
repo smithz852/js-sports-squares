@@ -298,6 +298,14 @@ document.querySelector('.X-box').classList.add('.xText');
   gameChoice.classList.add("scoreBtnDiv");
 
   console.log("Select Game", data);
+
+  if (data.statusCode === 400) {
+    console.log('no games available')
+    let noGame = document.createElement('h4')
+    noGame.textContent = 'No Games Available'
+    gameChoice.appendChild(noGame)
+  }
+  
   for (var i = 0; i < data.length; i++) {
     let choice = document.createElement("button");
     choice.textContent += `${data[i].HomeTeam} vs ${data[i].AwayTeam}`;

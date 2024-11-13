@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang = "en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Squares</title>
+    {{!-- <link rel="stylesheet" type="text/css" href="/css/jass.css"> --}}
+    <link rel="stylesheet"  href="/stylesheets/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="hero">
+            <div>
+                <nav class="nav">
+                    {{#if loggedIn}}
+                    <button id="logoutBtn" class="btn">Log Out</button>
+                    <button id="profileBtn" class="btn">View Profile</button>
+                    {{!-- <button id="howToPlayBtn" class="btn">How to Play</button> --}}
+                    {{else}}
+                    <a href="/login">Home</a>
+                    {{/if}}
+                </nav>
+            </div>
+            <img src="https://i.imgur.com/ILKx8bM.png" alt="sport-squares logo" height="200px" width="300px">
+        </header>
+
+        <main>
+            {{{ body }}}
+        </main>
+    </div>
+
+{{#if loggedIn}}
+<script src="/js/logout.js"></script>
+<script src="/js/profile.js"></script>
+{{!-- <script src="/js/howToPlay.js"></script> --}}
+{{/if}}
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<div class="card mx-auto" style="max-width: 730px; font-family:Verdana, Geneva, Tahoma, sans-serif">
+  <div class="card-header has-background-dark py-2">
+<div>
+  <input type="text" class="changeUsername changeInput" placeholder="Enter Username">
+  <button type="submit" class="changeUsernameBtn btn-submit">submit</button>
+</div>
+<p class="errorMsg">Please Enter A Username!</p>
+    <h4 class="mb-0 has-text-centered has-text-white">Your Squares Game</h4>
+    <div>
+      <h4 class="hide chooseGame">Choose A Game:</h4>
+      <button class="startSquares">Start Game</button>
+      <div class="gameChoices">
+
+      </div>
+    </div>
+
+    <div class="gameInfo">
+      <div>
+        <h5 class="homeTeam"></h5>
+        <p class="homeScore"></p>
+      </div>
+      <div>
+        <h5 class="quarter"></h5>
+        <h5 class="gamePlay"></h5>
+      </div>
+      <div>
+        <h5 class="awayTeam"></h5>
+        <p class="awayScore"></p>
+      </div>
+    </div>
+    <div class="card-content has-background-black">
+      <div class="columns is-gapless is-mobile">
+        <div class="column is-half" style="padding-right: 5px;">
+          <!-- Content for left half -->
+        </div>
+        <div class="column is-half" style="padding-left: 5px;">
+          <!-- Content for right half -->
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+  <div class="container" style="position: relative;">
+    <div class="card">
+<div class="container">
+  <div class="card">
+    <button id="startBtn" class="topLeftBtn">Generate Numbers</button>
+    <button id="clearBtn" class="topLeftBtn">Clear Numbers</button>
+    <button id="clearOpenBtn" class="topRightBtn">Clear Selections</button>
+      <table class="game-board" id="squaresTable">
+      </table>
+    </div>
+    <div class="chat-container">
+      <div class="card">
+         
+
+        <head>
+          <title>Socket.IO chat</title>
+          <style>
+            body {
+              margin: 0;
+              padding-bottom: 3rem;
+              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            }
+
+            #form {
+              background: rgba(0, 0, 0, 0.15);
+              padding: 0.25rem;
+              position: fixed;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              display: flex;
+              height: 3rem;
+              box-sizing: border-box;
+              backdrop-filter: blur(10px);
+            }
+
+            #input {
+              border: none;
+              padding: 0 1rem;
+              flex-grow: 1;
+              border-radius: 2rem;
+              margin: 0.25rem;
+            }
+
+            #input:focus {
+              outline: none;
+            }
+
+            #form>button {
+              background: #333;
+              border: none;
+              padding: 0 1rem;
+              margin: 0.25rem;
+              border-radius: 3px;
+              outline: none;
+              color: #fff;
+            }
+
+            #messages {
+              list-style-type: none;
+              margin: 0;
+              padding: 0;
+            }
+
+            #messages>li {
+              padding: 0.5rem 1rem;
+            }
+
+            #messages>li:nth-child(odd) {
+              background: #efefef;
+            }
+          </style>
+        </head>
+
+        <body>
+          <ul id="messages"></ul>
+          <form id="form" action="">
+            <input id="input" autocomplete="off" /><button>Send</button>
+          </form>
+        </body>
+      </div>
+    </div>
+  </div>
+  <div class="bigHomeTeam" style="font-size: 40px; position: absolute; top: 5%; left: -21%;"></div>
+  <div class="bigAwayTeam" style="font-size: 40px; position: absolute; top: -1.75%; left: 45%;"></div>
+  <div class="scoreCard" style="font-size: 59px; position: absolute;top: 10%; left: 9%; width: 90%">
+    Score Board
+     <div style="display: flex; font-size: 20px; gap: 4%; justify-content: center;">
+      <div>
+        <div>Q1</div>
+        <div class="Q1Win"></div>
+           <div class="q1Winner"></div>
+           <div contenteditable="true" style="color: rgb(24, 143, 24);">$</div>
+      </div>
+      <div>
+        <div>Q2</div>
+        <div class="Q2Win"></div>
+           <div class="q2Winner"></div>
+           <div contenteditable="true" style="color: rgb(24, 143, 24);">$</div>
+      </div>
+      <div>
+        <div>Q3</div>
+        <div class="Q3Win"></div>
+           <div class="q3Winner"></div>
+           <div contenteditable="true" style="color: rgb(24, 143, 24);">$</div>
+      </div>
+      <div><div>Q4</div>
+      <div class="Q4Win"></div>
+           <div class="q4Winner"></div>
+           <div contenteditable="true" style="color: rgb(24, 143, 24);">$</div>
+           </div>
+      </div>
+     </div>
+  </div>
+
+  <script src="/js/game.js"></script>
+  {{!--
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script> --}}
+  <script>
+    let counter = 0
+
+    const socket = io({
+      auth: {
+        serverOffset: 0
+      },
+      // enable retries
+      ackTimeout: 10000,
+      retries: 3,
+    });
+
+    const form = document.getElementById('form');
+    const input = document.getElementById('input');
+    const messages = document.getElementById('messages')
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (input.value) {
+        // compute a unique offset
+        const clientOffset = `${socket.id}-${counter++}`;
+        socket.emit('chat message', input.value, clientOffset);
+        input.value = '';
+      }
+    });
+
+    socket.on('chat message', (msg) => {
+      const item = document.createElement('li');
+      item.textContent = msg;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+  </script>
+

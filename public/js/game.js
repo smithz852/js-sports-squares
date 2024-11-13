@@ -43,6 +43,8 @@ function fetchById(scoreId) {
   }, 1000);
 }
 
+let globalTime = ''
+
 function fetchByDate(currentTime) {
   let requestUrl = `/api/gamesAvailable`;
   console.log("Post Time", currentTime);
@@ -56,6 +58,8 @@ function fetchByDate(currentTime) {
 
   setTimeout(() => {
     getGameList(currentTime);
+    console.log('global Time', currentTime)
+    globalTime = currentTime
   }, 1000);
 }
 
@@ -70,7 +74,7 @@ function getGameList(currentTime) {
     })
     .then(function (data) {
       console.log("Game List: ", data);
-      selectGame(data, currentTime);
+      selectGame(data);
     });
 }
 
@@ -289,12 +293,7 @@ function renderGameInfo(data) {
   refreshFetch(scoreId);
 }
 
-function selectGame(data, currentTime) {
-
-  setTimeout(() => {
-    
-  
-
+function selectGame(data) {
     document.getElementById("clearOpenBtn").classList.add('hide');
 document.getElementById("clearBtn").classList.add('hide')
 document.getElementById("startBtn").classList.add('hide')
@@ -309,7 +308,7 @@ document.querySelector('.X-box').classList.add('.xText');
     let noGame = document.createElement('h4')
     let noGameTime = document.createElement('h4')
     noGame.textContent = 'No Games Available'
-    noGameTime.textContent = `Simulation Time: ${currentTime}`
+    noGameTime.textContent = `Simulation Time: ${globalTime}`
     gameChoice.appendChild(noGame)
     gameChoice.appendChild(noGameTime)
   }
@@ -342,7 +341,6 @@ document.querySelector('.X-box').classList.add('.xText');
       console.log(scoreId);
     };
   }
- }, 1000);
 }
 
 function startGame() {

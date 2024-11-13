@@ -92,7 +92,7 @@ async function main() {
   });
 
   const sess = {
-    secret: process.env.DB_PASSWORD,
+    secret: process.env.SESSION_SECRET,
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
     resave: false,
     saveUninitialized: true,

@@ -135,7 +135,7 @@ async function main() {
   app.use(routes);
 
   sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, function () {
+    server.listen(PORT, function () {
       console.log(`App listening on port ${PORT}!`);
     });
   });

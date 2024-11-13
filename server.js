@@ -8,6 +8,7 @@ const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({ helpers: require("./utils/helpers") });
 const routes = require("./controllers");
+const Sequelize = require("sequelize");
 const sequelize = require("./config/connection");
 const cors = require("cors");
 

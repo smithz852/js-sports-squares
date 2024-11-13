@@ -306,6 +306,7 @@ document.querySelector('.X-box').classList.add('.xText');
     noGame.textContent = 'No Games Available'
     noGameTime.textContent = `Simulation Time: ${currentTime}`
     gameChoice.appendChild(noGame)
+    gameChoice.appendChild(noGameTime)
   }
   
   for (var i = 0; i < data.length; i++) {

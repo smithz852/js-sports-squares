@@ -303,6 +303,7 @@ document.querySelector('.X-box').classList.add('.xText');
   gameChoice.classList.add("scoreBtnDiv");
 
   console.log("Select Game", data);
+  console.log('global time', globalTime)
 
   if (data.statusCode === 400) {
     console.log('no games available')

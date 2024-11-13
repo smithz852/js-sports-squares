@@ -55,11 +55,12 @@ function fetchByDate(currentTime) {
     }),
     headers: { "Content-Type": "application/json" },
   });
+  console.log('global Time', currentTime)
+    globalTime = currentTime
 
   setTimeout(() => {
     getGameList(currentTime);
-    console.log('global Time', currentTime)
-    globalTime = currentTime
+    
   }, 1000);
 }
 

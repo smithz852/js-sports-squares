@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require("express-session");
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const { createServer } = require("node:http");
 const { join } = require("node:path");
 const { Server } = require("socket.io");
@@ -7,8 +9,6 @@ const cluster = require("node:cluster");
 const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
 const exphbs = require("express-handlebars");
 const Sequelize = require("sequelize");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const session = require("express-session");
 const cors = require("cors");
 const routes = require("./controllers");
 const hbs = exphbs.create({ helpers: require("./utils/helpers") });

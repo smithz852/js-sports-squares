@@ -94,6 +94,7 @@ function getCurrentDate() {
       let currentTime = timeData.substr(0, 10);
       console.log("Time Formated: ", currentTime);
       fetchByDate(currentTime);
+      localStorage.setItem('GT', currentTime)
     });
 }
 
@@ -306,14 +307,17 @@ document.querySelector('.X-box').classList.add('.xText');
   console.log('global time', globalTime)
 
   if (data.statusCode === 400) {
-    console.log('no games available')
-    let noGame = document.createElement('h4')
-    let noGameTime = document.createElement('h4')
-    noGame.textContent = 'No Games Available'
-    noGameTime.textContent = `Simulation Time: ${globalTime}`
-    gameChoice.appendChild(noGame)
-    gameChoice.appendChild(noGameTime)
-  }
+    setTimeout(() => {
+      let fillerTimer = localStorage.getItem('GT')
+      console.log('no games available')
+      let noGame = document.createElement('h4')
+      let noGameTime = document.createElement('h4')
+      noGame.textContent = 'No Games Available'
+      noGameTime.textContent = `Simulation Time: ${fillerTimer}`
+      gameChoice.appendChild(noGame)
+      gameChoice.appendChild(noGameTime)
+     }, 500)
+    }
   
   for (var i = 0; i < data.length; i++) {
     let choice = document.createElement("button");

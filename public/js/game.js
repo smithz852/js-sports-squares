@@ -63,7 +63,7 @@ function fetchByDate(currentTime) {
 
 function getGameList(currentTime) {
   let requestUrl = `/api/gamesAvailable/${currentTime}`;
-
+ console.log('game list time:', currentTime)
   fetch(requestUrl)
     .then(function (response) {
       return response.json();

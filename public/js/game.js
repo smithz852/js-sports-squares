@@ -63,14 +63,15 @@ function fetchByDate(currentTime) {
 
 function getGameList(currentTime) {
   let requestUrl = `/api/gamesAvailable/${currentTime}`;
- console.log('game list time:', currentTime)
+ 
   fetch(requestUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
       console.log("Game List: ", data);
-      selectGame(data, currentTime);
+      console.log('game list time:', currentTime)
+      selectGame(data);
     });
 }
 
@@ -289,7 +290,7 @@ function renderGameInfo(data) {
   refreshFetch(scoreId);
 }
 
-function selectGame(data, currentTime) {
+function selectGame(data) {
     document.getElementById("clearOpenBtn").classList.add('hide');
 document.getElementById("clearBtn").classList.add('hide')
 document.getElementById("startBtn").classList.add('hide')
@@ -304,7 +305,7 @@ document.querySelector('.X-box').classList.add('.xText');
     let noGame = document.createElement('h4')
     let noGameTime = document.createElement('h4')
     noGame.textContent = 'No Games Available'
-    noGameTime.textContent = `Simulation Time: ${currentTime}`
+    noGameTime.textContent = `Simulation Time: ${data.CurrentTime}`
     gameChoice.appendChild(noGame)
     gameChoice.appendChild(noGameTime)
   }

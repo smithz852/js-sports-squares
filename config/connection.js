@@ -20,7 +20,7 @@ if (process.env.DATABASE_URL) {
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
-    process.env.DB_PASSWORD,
+    process.env.SESSION_SECRECT,
     {
       host: 'localhost',
       dialect: 'postgres', // Use 'postgres' instead of 'mysql'

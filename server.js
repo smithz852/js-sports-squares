@@ -22,7 +22,6 @@ if (cluster.isPrimary) {
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
-
   // set up the adapter on the primary thread
   return setupPrimary();
 }

@@ -306,7 +306,7 @@ document.querySelector('.X-box').classList.add('.xText');
   console.log("Select Game", data);
   console.log('global time', globalTime)
 
-  if (data.statusCode === 400) {
+  if (data.statusCode === 400 && !data) {
     setTimeout(() => {
       let fillerTimer = localStorage.getItem('GT')
       console.log('no games available')

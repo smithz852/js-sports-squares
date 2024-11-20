@@ -316,6 +316,7 @@ document.querySelector('.X-box').classList.add('.xText');
       noGameTime.textContent = `Simulation Time: ${fillerTimer}`
       gameChoice.appendChild(noGame)
       gameChoice.appendChild(noGameTime)
+      return
      }, 500)
     }
   

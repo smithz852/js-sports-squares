@@ -317,7 +317,7 @@ document.querySelector('.X-box').classList.add('.xText');
       gameChoice.appendChild(noGame)
       gameChoice.appendChild(noGameTime)
       return
-     }, 500)
+     }, 200)
     }
   
   for (var i = 0; i < data.length; i++) {
@@ -380,7 +380,7 @@ function startSquares() {
     startSquaresBtn.classList.add('hide')
     chooseGame.classList.remove('hide')
     getCurrentDate();
-    getGameList();
+    // getGameList();
 }
 
 function clearNumbers() {

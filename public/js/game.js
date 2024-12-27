@@ -83,8 +83,12 @@ function displayTimer(game) {
       return response.json();
     })
     .then(function (data) {
-      //console.log("Timer: ", data);
-      gamePlay.textContent = `${data.formattedTime}`;
+      // console.log("Timer: ", data);
+      if (data.formattedTime === "NaN:NaN" || "NaN") {
+        gamePlay.textContent = '00:00'
+      } else {
+        gamePlay.textContent = `${data.formattedTime}`;
+      }
       if (data.timeRemaining === 1) {
         refreshFetch(game, globalOddsInfo);
       }

@@ -6,6 +6,7 @@ body {
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     min-height: 100vh; /* Ensure the entire viewport height is covered */
+    /* overflow: hidden; */
 }
 
 .wrapper {
@@ -28,6 +29,10 @@ h2 {
 
 p {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+td {
+  min-width: 40px;
 }
 
 a {
@@ -157,6 +162,52 @@ a:active {
   display: flex;
 }
 
+.oddsFlex {
+  display: flex;
+  justify-content: center;
+  gap: 25%;
+  margin-bottom: 6%;
+    margin-top: 6%;
+}
+
+.oddsTitles {
+  font-family: cursive;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 4%;
+    margin-top: 4%;
+}
+
+.boardFiller {
+  margin-bottom: 85%;
+}
+
+.wagerInput {
+  width: 20%;
+  font-size: 15pt;
+  border-radius: 10px 10px 10px 10px;
+  border: solid rgb(23, 197, 23) 3px;
+  margin-top: 1%;
+}
+
+.wagerBtn {
+  font-size: 15pt;
+  color: white;
+  background-color: rgb(23, 197, 23);
+  border-radius: 5px 5px 5px 5px;
+}
+
+.wagerBtn:hover {
+  cursor: pointer;
+  background-color: rgb(19, 155, 19);
+}
+
+.multi {
+  font-size: 10pt;
+  text-align: start;
+  margin-right: 17%;
+}
+
 .topLeftBtn {
   background-color: rgb(238, 3, 39);
   color: #fff;
@@ -173,7 +224,7 @@ a:active {
 
 .topLeftBtn:active {
   background-color: rgb(145, 6, 26);
-  box-shadow: 0 5px #666;
+  box-shadow: 0 2px #666;
   transform: translateY(4px);
 }
 
@@ -193,27 +244,28 @@ a:active {
 
 .topRightBtn:active {
   background-color: rgb(145, 6, 26);
-  box-shadow: 0 5px #666;
+  box-shadow: 0 2px #666;
   transform: translateY(4px);
 }
 
-.game-board {
-  /* flex-grow: 1; Occupy remaining space */
-  display: grid;
-  grid-template-columns: repeat(11, 1fr); /* 10 columns for digits 0-9 */
-  grid-template-rows: repeat(11, 1fr); /* 10 rows for digits 0-9 */
-  gap: 5px; /* Gap between grid items */
-  margin: 0 auto; /* Center horizontally */
-  width: 80%; /* Set the width as needed */
+.theOddsBoard {
+  font-family: cursive;
+  color: rgb(231, 222, 222);
+  position: absolute;
+  top: 0%;
+  right: -40%;
+  background: linear-gradient(#2a2e31 25%, #4a4d50 75%);
+  width: 35%;
+  border: solid rgb(87, 56, 21) 5px;
+  border-radius: 5px 5px 5px 5px;
 }
-
-
 
 .game-board {
     display: grid;
-    grid-template-columns: repeat(11, 1fr); /* 10 columns for digits 0-9 */
-    grid-template-rows: repeat(11, 1fr); /* 10 rows for digits 0-9 */
+    grid-template-columns: repeat(11, 0fr); /* 10 columns for digits 0-9 */
+    grid-template-rows: repeat(11, 0fr); /* 10 rows for digits 0-9 */
     gap: 5px; /* Gap between grid items */
+    
   }
   
   .row {
@@ -282,13 +334,14 @@ a:active {
     cursor: pointer;
     box-shadow: 0 7px #999;
     animation:colorchange 1s infinite alternate;
+    margin-bottom: 3%;
   }
 
   .startSquares:hover {background-color: rgb(145, 6, 26)}
 
 .startSquares:active {
   background-color: rgb(145, 6, 26);
-  box-shadow: 0 5px #666;
+  box-shadow: 0 2px #666;
   transform: translateY(4px);
 }
   
@@ -307,7 +360,7 @@ a:active {
   
   .btn-submit:active {
     background-color: rgb(145, 6, 26);
-    box-shadow: 0 5px #666;
+    box-shadow: 0 2px #666;
     transform: translateY(4px);
   }
 
@@ -318,9 +371,120 @@ a:active {
   .scoreBtnDiv {
     padding: 0;
     display: flex; 
-    flex-wrap: wrap; 
+    flex-direction: column;
     gap: 5%; 
     justify-content: center;
+  }
+
+  .digitalBoard {
+    background-color: black;
+    margin-bottom: 10%;
+    border: solid rgb(145, 142, 142) 5px;
+    color: white;
+  }
+
+  .boardHeader {
+    font-size: 50px; 
+    margin-top: 5%;
+    border-bottom: solid whitesmoke 5px;
+    border-right: solid whitesmoke 5px;
+    border-left: solid whitesmoke 5px;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
+
+  .homeTeam {
+    margin-top: 0%;
+    margin-bottom: 1%;
+  }
+
+  .homeScore {
+    font-size: 40pt;
+    margin-top: -9%;
+    color: blue;
+  }
+
+  .awayTeam {
+    margin-top: 0%;
+    margin-bottom: 1%;
+  }
+
+  .awayScore {
+    font-size: 40pt;
+    margin-top: -9%;
+    color: blue;
+  }
+
+  .quarter {
+    margin-top: 8%;
+    margin-bottom: 13%;
+  }
+
+  .timerDescr {
+    font-size: 12pt;
+    margin-bottom: 1%;  }
+
+  .gamePlay {
+    margin-top: 2%;
+    font-size: 20pt;
+    margin-bottom: 0%;
+  }
+
+  .infoContainerH {
+    border-right: solid whitesmoke 5px;
+    /* padding-left: 2%;
+    padding-right: 4%; */
+    flex: 1;
+  }
+
+  .infoContainerA {
+    border-left: solid whitesmoke 5px;
+    /* padding-left: 4%;
+    padding-right: 2%; */
+    flex: 1;
+  }
+
+  .infoContainerG {
+    flex: 1;
+  }
+
+  .teamLogo {
+    width: 40%;
+    margin-bottom: 5%;
+  }
+
+  .quarterDiv {
+    border-right: solid whitesmoke 5px;
+    flex: 1;
+  }
+
+  .quarterContainer {
+    display: flex; 
+    font-size: 15pt; 
+    justify-content: space-evenly; 
+  }
+
+  .QHeader {
+    margin-top: 5%;
+  }
+
+  .trophy {
+    margin-bottom: 10%;
+  }
+
+  .upcomingGame {
+    color: rgb(53, 223, 53);
+    font-weight: bold;
+  }
+
+  .finalGame {
+    color: black;
+    font-weight: bold;
+  }
+
+  .inProgress {
+    color: blue;
+    font-weight: bold;
   }
 
   .highlightWinner {

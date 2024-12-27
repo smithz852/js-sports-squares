@@ -2,54 +2,47 @@ const express = require("express");
 const { createServer } = require("node:http");
 const { join } = require("node:path");
 const { Server } = require("socket.io");
-const sqlite3 = require("sqlite3");
-const { open } = require("sqlite");
 const { availableParallelism } = require("node:os");
 const cluster = require("node:cluster");
 const { createAdapter, setupPrimary } = require("@socket.io/cluster-adapter");
 const exphbs = require("express-handlebars");
 const hbs = exphbs.create({ helpers: require("./utils/helpers") });
-// Activate when controllers are added.
 const routes = require("./controllers");
+const Sequelize = require("sequelize");
 const sequelize = require("./config/connection");
-const path = require("path");
 const cors = require("cors");
 
 const PORT = process.env.PORT || 3001;
+
 if (cluster.isPrimary) {
   const numCPUs = availableParallelism();
-  // create one worker per available core
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
   }
-
-  // set up the adapter on the primary thread
   return setupPrimary();
 }
 
 async function main() {
-  // open the database file
-  const db = await open({
-    filename: "chat.db",
-    driver: sqlite3.Database,
-  });
-
-  // create our 'messages' table (you can ignore the 'client_offset' column for now)
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS messages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        client_offset TEXT UNIQUE,
-        content TEXT
-    );
-  `);
-
   const app = express();
-
   const server = createServer(app);
   const io = new Server(server, {
     connectionStateRecovery: {},
     adapter: createAdapter(),
   });
+
+  // Define the 'Messages' model for PostgreSQL using Sequelize
+  const Messages = sequelize.define("Messages", {
+    client_offset: {
+      type: Sequelize.TEXT,
+      unique: true,
+    },
+    content: {
+      type: Sequelize.TEXT,
+    },
+  });
+
+  // Ensure PostgreSQL table is synced
+  await sequelize.sync();
 
   app.get("/", (req, res) => {
     res.sendFile(join(__dirname, 'views'));
@@ -58,60 +51,52 @@ async function main() {
 
   io.on("connection", async (socket) => {
     console.log("a user connected");
+
     socket.on("chat message", async (msg, clientOffset, callback) => {
-      let result;
       try {
-        // store the message in the database
-        result = await db.run(
-          "INSERT INTO messages (content, client_offset) VALUES (?, ?)",
-          msg,
-          clientOffset
-        );
+        // Save message in PostgreSQL
+        const message = await Messages.create({
+          content: msg,
+          client_offset: clientOffset,
+        });
+
+        // Emit the message with its ID
+        io.emit("chat message", msg, message.id);
+        callback();
       } catch (e) {
-        if (e.errno === 19 /* SQLITE_CONSTRAINT */) {
-          // the message was already inserted, so we notify the client
-          callback();
+        if (e.name === "SequelizeUniqueConstraintError") {
+          callback(); // If the message is a duplicate, just notify the client
         } else {
-          // nothing to do, just let the client retry
+          console.error(e);
         }
-        return;
       }
-      // include the offset with the message
-      io.emit("chat message", msg, result.lastID);
-      // acknowledge the event
-      callback();
     });
+
     if (!socket.recovered) {
-      // if the connection state recovery was not successful
       try {
-        await db.each(
-          "SELECT id, content FROM messages WHERE id > ?",
-          [socket.handshake.auth.serverOffset || 0],
-          (_err, row) => {
-            socket.emit("chat message", row.content, row.id);
-          }
-        );
+        // Fetch messages from PostgreSQL with offset handling
+        const messages = await Messages.findAll({
+          where: {
+            id: { [Sequelize.Op.gt]: socket.handshake.auth.serverOffset || 0 },
+          },
+        });
+
+        messages.forEach((row) => {
+          socket.emit("chat message", row.content, row.id);
+        });
       } catch (e) {
-        // something went wrong
+        console.error("Error fetching messages:", e);
       }
     }
   });
 
-  // socket.on('disconnect', () => {
-  //   console.log('user disconnected');
-  // });
-
   const session = require("express-session");
-
   const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
-  // Set up sessions with cookies
+  // Set up sessions with PostgreSQL-backed store
   const sess = {
-    secret: process.env.DB_PASSWORD,
-    cookie: {
-      // Stored in milliseconds
-      maxAge: 24 * 60 * 60 * 1000, // expires after 1 day
-    },
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     resave: false,
     saveUninitialized: true,
     store: new SequelizeStore({
@@ -120,8 +105,6 @@ async function main() {
   };
 
   app.use(cors());
-
-  // Activate when mySQL is added.
   app.use(session(sess));
 
   app.engine("handlebars", hbs.engine);
@@ -129,15 +112,14 @@ async function main() {
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  app.use(express.static(path.join(__dirname, "public")));
+  app.use(express.static(join(__dirname, "public")));
 
-  // Activate when routes is created.
   app.use(routes);
 
-  sequelize.sync({ force: false }).then(() => {
-    app.listen(PORT, function () {
-      console.log(`App listening on port ${PORT}!`);
-    });
+  // Start the server
+  server.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}!`);
   });
 }
+
 main();

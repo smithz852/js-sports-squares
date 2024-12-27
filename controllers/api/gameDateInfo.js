@@ -5,7 +5,7 @@ router.get('/', async (req, res) => {
 
   const dateData = req.params.date
   console.log(dateData);
-    let sportsAPI = `https://replay.sportsdata.io/api/metadata?key=a60871dc57564272b95964e2a4e8bd87`;
+    let sportsAPI = `https://replay.sportsdata.io/api/metadata?key=124522fa4ec34339b7ce6ec93da9caca`;
     console.log(sportsAPI)
     fetch(sportsAPI).then(function(response) {
       return response.json();

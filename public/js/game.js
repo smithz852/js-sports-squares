@@ -15,11 +15,9 @@ function refreshFetch(game, globalOddsInfo) {
   let keyData = `${game.teams.home.name}&${game.teams.away.name}`;
   let scoreId = localStorage.getItem(keyData);
   let requestUrl = `/api/nflApiFetch/${scoreId}`
-  // let nflGames = [game]
   
     officialWins = []
     //console.log("Refresh ID", scoreId);
-    // getSportApi(scoreId);
     fetch(requestUrl)
       .then(function (response) {
         return response.json();
@@ -35,21 +33,8 @@ function refreshFetch(game, globalOddsInfo) {
 }
 
 function gameInfoByID(scoreId, globalOddsInfo, nflGames) {
-  // let postURL = '/api/nflApiFetch'
-  //console.log("Game ID: ", scoreId);
-  //console.log("Nfl Games from id fetch: ", nflGames);
-   
-  // fetch(postURL, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify({ score_id: scoreId })
-  // });
-
   nflGames.forEach((game) => {
     //console.log("Game: ", game)
-    //console.log("Game ID Int: ", parseInt(scoreId))
     if (game.game.id === parseInt(scoreId)) {
       //console.log("selected game: ", game)
       renderGameInfo(game, globalOddsInfo)
@@ -479,8 +464,6 @@ function startGame() {
   const questionBox = document.querySelectorAll(".question-box");
   let homeBoxArr = [0,1,2,3,4,5,6,7,8,9]
   let awayBoxArr = [0,1,2,3,4,5,6,7,8,9]
-//   let i = 0;
-    // i++;
     for (var i = 0; i < 20; i++) {
     //console.log(i)
    if (i < 10) {
@@ -567,7 +550,6 @@ resetBtn.addEventListener("click", function (event) {
 multiplierBtn.addEventListener('click', (event) => {
    event.preventDefault()
    let userWager = document.querySelector('.wagerInput').value
-   // add function call to multiply btn clicks by wager
    globalOddsInfo.wager = userWager
    const userNameArr = globalOddsInfo.userNameArr
    const wager = globalOddsInfo.wager
@@ -601,7 +583,6 @@ function selectWinner(game, scoreCheck) {
     //console.log("win array", winnerArray);
     //console.log("home score parse", homeData.length);
     //console.log("away score parse", awayData.length);
-
     highlightRedSquares(winnerArray, game);
   }
 }
@@ -618,10 +599,8 @@ function highlightRedSquares(winnerArray, game) {
   let homeSplice = awayArray.splice(0, 10);
   homeArray.push(homeSplice);
   //console.log("homeArray", homeArray);
-
   //console.log("away compare", winnerArray[0].awaySquareNum);
   //console.log("Home Array: ", homeArray[0][1].innerHTML);
-
   for (var i = 0; i < awayArray.length; i++) {
     if (winnerArray[0].awaySquareNum === awayArray[i].innerHTML) {
       let winningAwaySquare = awayArray[i];
@@ -837,5 +816,3 @@ const boardFiller = document.querySelector('.oddsTitles')
 }
 
 getGameData();
-
-//Click function by user to keep track of squares

@@ -407,7 +407,7 @@ function renderGameInfo(game, globalOddsInfo ) {
 }
 
 function selectGame(nflGames, globalOddsInfo) {
-  //console.log('nfl games from fetch', nflGames)
+  console.log('nfl games from fetch', nflGames)
 
     document.getElementById("clearOpenBtn").classList.add('hide');
 document.getElementById("clearBtn").classList.add('hide')
@@ -417,6 +417,13 @@ document.querySelector('.X-box').classList.add('.xText');
   const chooseGameHeader = document.querySelector('.chooseGame')
 
   gameChoice.classList.add("scoreBtnDiv");
+
+  if (nflGames.length === 0) {
+    let noChoices = document.createElement('h4')
+    noChoices.textContent = 'No Games Available Today'
+    gameChoice.appendChild(noChoices)
+    return;
+  }
 
   //console.log("Select Game", nflGames);
   for (var i = 0; i < nflGames.length; i++) {

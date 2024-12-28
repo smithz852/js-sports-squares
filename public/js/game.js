@@ -69,11 +69,11 @@ function displayTimer(game) {
     })
     .then(function (data) {
       // console.log("Timer: ", data);
-      if (data.formattedTime === "NaN:NaN" || "NaN") {
-        gamePlay.textContent = '00:00'
-      } else {
+      // if (data.formattedTime === "NaN:NaN" || "NaN") {
+      //   gamePlay.textContent = '00:00'
+      // } else {
         gamePlay.textContent = `${data.formattedTime}`;
-      }
+      //}
       if (data.timeRemaining === 1) {
         refreshFetch(game, globalOddsInfo);
       }

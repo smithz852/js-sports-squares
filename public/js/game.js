@@ -430,12 +430,10 @@ document.querySelector('.X-box').classList.add('.xText');
     let choice = document.createElement("button");
     let progress = nflGames[i].game.status.short
     let gameStatus = `<span>${progress}</span>`
+  if (progress !== 'FT')  {
     if (progress === 'NS') {
       progress = 'Upcoming'
       gameStatus = `<span class='upcomingGame'>${progress}</span>`
-    } else if (progress === 'FT') {
-      progress = 'Final'
-      gameStatus = `<span class='finalGame'>${progress}</span>`
     } else {
       gameStatus = `<span class='inProgress'>${progress}</span>`
     }
@@ -464,6 +462,7 @@ document.querySelector('.X-box').classList.add('.xText');
       gameInfoByID(scoreId, globalOddsInfo, nflGames);
       //console.log(scoreId);
     };
+   } 
   }
 }
 

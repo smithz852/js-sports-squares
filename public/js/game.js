@@ -60,20 +60,20 @@ function displayTimer(game) {
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
-   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${null}`
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
   }
+
+
 
    fetch(requestUrl)
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      // console.log("Timer: ", data);
-      // if (data.formattedTime === "NaN:NaN" || "NaN") {
-      //   gamePlay.textContent = '00:00'
-      // } else {
-        gamePlay.textContent = `${data.formattedTime}`;
-      //}
+      console.log("Timer: ", data);
+      
+        gamePlay.innerHTML = `${data.formattedTime}`;
+      
       if (data.timeRemaining === 1) {
         refreshFetch(game, globalOddsInfo);
       }

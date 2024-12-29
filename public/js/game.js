@@ -94,14 +94,19 @@ function timeUntilGame(gameTime) {
   let gameTimeArr = gameTime.split(':')
   let gameTimeHours = parseInt(gameTimeArr[0])
   let gameTimeMinutes = parseInt(gameTimeArr[1])
-  let userTimeNow = date.toLocaleDateString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+  let userTimeNow = date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+});
 
+console.log('user time now: ', userTimeNow)
 const gameTimeSeconds = (gameTimeHours * 3600) + (gameTimeMinutes * 60)
+
 const currentTimeSeconds = (parseInt(userTimeNow.split(':')[0]) * 3600) + (parseInt(userTimeNow.split(':')[1]) * 60)
+console.log('seconds: ', currentTimeSeconds)
 const secondsUntilGame = gameTimeSeconds - currentTimeSeconds
+console.log('until game: ', secondsUntilGame)
 
 return secondsUntilGame
 

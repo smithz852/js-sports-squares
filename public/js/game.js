@@ -71,7 +71,7 @@ function displayTimer(game) {
       return response.json();
     })
     .then(function (data) {
-      console.log("Timer: ", data);
+      // console.log("Timer: ", data);
       
         gamePlay.innerHTML = `${data.formattedTime}`;
       
@@ -299,7 +299,7 @@ function wagerMultiplier(userNameArr, wager) {
 }
 
 function renderGameInfo(game, globalOddsInfo ) {
-  //console.log('rendering game info: ', game)
+  console.log('rendering game info: ', game)
   const homeTeam = document.querySelector(".homeTeam");
   const awayTeam = document.querySelector(".awayTeam");
   const quarter = document.querySelector(".quarter");
@@ -353,7 +353,7 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: game.scores.home.quarter_1,
         awayCheck: game.scores.away.quarter_1
       }
-      selectWinner(0, scoreCheck)
+      selectWinner(game, scoreCheck)
     }
   } else {
     Q1.textContent = "TBD";
@@ -368,7 +368,7 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: Q2HomeScore,
         awayCheck: Q2AwayScore
       }
-      selectWinner(0, scoreCheck)
+      selectWinner(game, scoreCheck)
     }
   } else {
     Q2.textContent = "TBD";
@@ -383,7 +383,7 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: Q3HomeScore,
         awayCheck: Q3AwayScore
       }
-      selectWinner(0, scoreCheck)
+      selectWinner(game, scoreCheck)
     }
   } else {
     Q3.textContent = "TBD";
@@ -398,7 +398,7 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: Q4HomeScore,
         awayCheck: Q4AwayScore
       }
-      selectWinner(0, scoreCheck)
+      selectWinner(game, scoreCheck)
     }
   } else {
     Q4.textContent = "TBD";
@@ -576,7 +576,7 @@ function selectWinner(game, scoreCheck) {
   let awayData = ''
   let isGameStarted = ''
 
-  if (game !== 0) {
+  if (scoreCheck === 0) {
   homeData = JSON.stringify(game.scores.home.total);
   awayData = JSON.stringify(game.scores.away.total);
   isGameStarted = game.game.status.short;
@@ -593,9 +593,9 @@ function selectWinner(game, scoreCheck) {
       awaySquareNum: awayData.charAt(awayData.length - 1),
     };
     winnerArray.push(scoreObject);
-    //console.log("win array", winnerArray);
-    //console.log("home score parse", homeData.length);
-    //console.log("away score parse", awayData.length);
+    console.log("win array", winnerArray);
+    console.log("home score parse", homeData.length);
+    console.log("away score parse", awayData.length);
     highlightRedSquares(winnerArray, game);
   }
 }

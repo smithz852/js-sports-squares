@@ -27,7 +27,6 @@ function refreshFetch(game, globalOddsInfo) {
         const game = data.response[0]
         //console.log('refetched game: ', game)
         //console.log('global odds in refresh: ', globalOddsInfo)
-        saveGameData(globalOddsInfo)
        renderGameInfo(game, globalOddsInfo)
        displayTimer(game)
       });
@@ -411,6 +410,7 @@ function renderGameInfo(game, globalOddsInfo ) {
   
   selectWinner(game, 0)
   displayTimer(game)
+  saveGameData(globalOddsInfo)
 }
 
 function selectGame(nflGames, globalOddsInfo) {

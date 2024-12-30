@@ -29,6 +29,7 @@ function refreshFetch(game, globalOddsInfo) {
         //console.log('global odds in refresh: ', globalOddsInfo)
         saveGameData(globalOddsInfo)
        renderGameInfo(game, globalOddsInfo)
+       displayTimer(game)
       });
 }
 
@@ -76,6 +77,7 @@ function displayTimer(game) {
       
       if (data.timeRemaining === 1) {
         refreshFetch(game, globalOddsInfo);
+        return
       }
     });
 

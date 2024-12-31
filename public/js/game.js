@@ -6,8 +6,8 @@ const globalOddsInfo = {
 
 let gameStarted = false
 let q1HasStarted = false
-let q2HasStarted = true
-let q3HasStarted = true
+let q2HasStarted = false
+let q3HasStarted = false
 let q4HasStarted = false
 
 
@@ -60,7 +60,7 @@ function displayTimer(game) {
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
-   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${180}`
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
   }
 
 
@@ -382,7 +382,6 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: Q3HomeScore,
         awayCheck: Q3AwayScore
       }
-      console.log('checking q3 score *****')
       selectWinner(game, scoreCheck)
     }
   } else {
@@ -586,7 +585,6 @@ function selectWinner(game, scoreCheck) {
   if (scoreCheck !== 0) {
     homeData = JSON.stringify(scoreCheck.homeCheck);
     awayData = JSON.stringify(scoreCheck.awayCheck);
-    console.log('scorecheck data: ', homeData, awayData)
   }
 
   if (isGameStarted !== "FT" || "NS") {
@@ -594,11 +592,10 @@ function selectWinner(game, scoreCheck) {
       homeSquareNum: homeData.charAt(homeData.length - 1),
       awaySquareNum: awayData.charAt(awayData.length - 1),
     };
-    console.log(scoreObject)
     winnerArray.push(scoreObject);
     console.log("win array", winnerArray);
-    // console.log("home score parse", homeData.length);
-    // console.log("away score parse", awayData.length);
+    console.log("home score parse", homeData.length);
+    console.log("away score parse", awayData.length);
     highlightRedSquares(winnerArray, game);
   }
 }
@@ -678,7 +675,7 @@ function recordWinner(game) {
     let allTD = document.querySelectorAll('td')
     allTD.forEach((sq) => {
        if(sq.classList.contains('winningSquare') === true) {
-        console.log('*** WINNER ****: ', sq.textContent)
+        //console.log('*** WINNER ****: ', sq.textContent)
         officialWins.push(sq.textContent)
        }
     })
@@ -721,12 +718,12 @@ function winnerScoreBoard(officialWins, game) {
         q2Winner.innerHTML += win + '🏆'
     q3Winner.innerHTML = '🏆'
     q4Winner.innerHTML = '🏆'
-      } else if (game.scores.away.quarter_3 !== null && game.scores.home.quarter_3 !== null && game.scores.away.quarter_4 === null && game.scores.home.quarter_4 === null || q3HasStarted === true) {
+      } else if (game.scores.away.quarter_3 !== null && game.scores.home.quarter_3 !== null && game.scores.away.quarter_4 === null && game.scores.home.quarter_4 === null) {
         q3HasStarted = true
         q3Winner.innerHTML = ''
         q3Winner.innerHTML += win + '🏆'
     q4Winner.innerHTML = '🏆'
-      } else if (game.scores.away.quarter_4 !== null && game.scores.home.quarter_4 !== null || q4HasStarted === true) {
+      } else if (game.scores.away.quarter_4 !== null && game.scores.home.quarter_4 !== null) {
         q4HasStarted = true
         q4Winner.innerHTML = ''
         q4Winner.innerHTML += win + '🏆'

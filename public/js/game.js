@@ -6,8 +6,8 @@ const globalOddsInfo = {
 
 let gameStarted = false
 let q1HasStarted = false
-let q2HasStarted = false
-let q3HasStarted = false
+let q2HasStarted = true
+let q3HasStarted = true
 let q4HasStarted = false
 
 
@@ -25,7 +25,7 @@ function refreshFetch(game, globalOddsInfo) {
       .then(function (data) {
         //console.log("Nfl API: ", data.response);
         const game = data.response[0]
-        //console.log('refetched game: ', game)
+        console.log('refetched game: ', game)
         //console.log('global odds in refresh: ', globalOddsInfo)
        renderGameInfo(game, globalOddsInfo)
        displayTimer(game)
@@ -60,7 +60,7 @@ function displayTimer(game) {
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
-   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${180}`
   }
 
 
@@ -382,6 +382,7 @@ function renderGameInfo(game, globalOddsInfo ) {
         homeCheck: Q3HomeScore,
         awayCheck: Q3AwayScore
       }
+      console.log('checking q3 score *****')
       selectWinner(game, scoreCheck)
     }
   } else {
@@ -585,6 +586,7 @@ function selectWinner(game, scoreCheck) {
   if (scoreCheck !== 0) {
     homeData = JSON.stringify(scoreCheck.homeCheck);
     awayData = JSON.stringify(scoreCheck.awayCheck);
+    console.log('scorecheck data: ', homeData, awayData)
   }
 
   if (isGameStarted !== "FT" || "NS") {
@@ -592,10 +594,11 @@ function selectWinner(game, scoreCheck) {
       homeSquareNum: homeData.charAt(homeData.length - 1),
       awaySquareNum: awayData.charAt(awayData.length - 1),
     };
+    console.log(scoreObject)
     winnerArray.push(scoreObject);
     console.log("win array", winnerArray);
-    console.log("home score parse", homeData.length);
-    console.log("away score parse", awayData.length);
+    // console.log("home score parse", homeData.length);
+    // console.log("away score parse", awayData.length);
     highlightRedSquares(winnerArray, game);
   }
 }
@@ -675,7 +678,7 @@ function recordWinner(game) {
     let allTD = document.querySelectorAll('td')
     allTD.forEach((sq) => {
        if(sq.classList.contains('winningSquare') === true) {
-        //console.log('*** WINNER ****: ', sq.textContent)
+        console.log('*** WINNER ****: ', sq.textContent)
         officialWins.push(sq.textContent)
        }
     })
@@ -688,7 +691,7 @@ function recordWinner(game) {
         if (officialWins[i] === officialWins[i+1]) {
             //console.log(officialWins.splice(i, i))
             //console.log(officialWins)
-            winnerScoreBoard(officialWins, data)
+            winnerScoreBoard(officialWins, game)
         }
     }
    }
@@ -718,12 +721,12 @@ function winnerScoreBoard(officialWins, game) {
         q2Winner.innerHTML += win + '🏆'
     q3Winner.innerHTML = '🏆'
     q4Winner.innerHTML = '🏆'
-      } else if (game.scores.away.quarter_3 !== null && game.scores.home.quarter_3 !== null && game.scores.away.quarter_4 === null && game.scores.home.quarter_4 === null) {
+      } else if (game.scores.away.quarter_3 !== null && game.scores.home.quarter_3 !== null && game.scores.away.quarter_4 === null && game.scores.home.quarter_4 === null || q3HasStarted === true) {
         q3HasStarted = true
         q3Winner.innerHTML = ''
         q3Winner.innerHTML += win + '🏆'
     q4Winner.innerHTML = '🏆'
-      } else if (game.scores.away.quarter_4 !== null && game.scores.home.quarter_4 !== null) {
+      } else if (game.scores.away.quarter_4 !== null && game.scores.home.quarter_4 !== null || q4HasStarted === true) {
         q4HasStarted = true
         q4Winner.innerHTML = ''
         q4Winner.innerHTML += win + '🏆'
@@ -746,7 +749,11 @@ let TDs = document.querySelectorAll('td')
 function saveGameData(globalOddsInfo) {
   //console.log('saving data')
   const userNameArr = globalOddsInfo.userNameArr
-  localStorage.setItem('userNameArr', JSON.stringify(userNameArr))
+
+  if (!localStorage.getItem('userNameArr')) {
+    localStorage.setItem('userNameArr', JSON.stringify(userNameArr))
+  }
+  
 
   userNameArr.forEach((user) => {
     const userSq = document.querySelector(`.${user}`).textContent

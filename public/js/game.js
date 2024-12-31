@@ -350,7 +350,8 @@ function renderGameInfo(game, globalOddsInfo ) {
     if (q1HasStarted) {
       let scoreCheck = {
         homeCheck: game.scores.home.quarter_1,
-        awayCheck: game.scores.away.quarter_1
+        awayCheck: game.scores.away.quarter_1,
+        quarter: 'q1'
       }
       selectWinner(game, scoreCheck)
     }
@@ -365,7 +366,8 @@ function renderGameInfo(game, globalOddsInfo ) {
     if (q2HasStarted) {
       let scoreCheck = {
         homeCheck: Q2HomeScore,
-        awayCheck: Q2AwayScore
+        awayCheck: Q2AwayScore,
+        quarter: 'q2'
       }
       selectWinner(game, scoreCheck)
     }
@@ -380,7 +382,8 @@ function renderGameInfo(game, globalOddsInfo ) {
     if (q3HasStarted) {
       let scoreCheck = {
         homeCheck: Q3HomeScore,
-        awayCheck: Q3AwayScore
+        awayCheck: Q3AwayScore,
+        quarter: 'q3'
       }
       selectWinner(game, scoreCheck)
     }
@@ -395,7 +398,8 @@ function renderGameInfo(game, globalOddsInfo ) {
     if (q4HasStarted) {
       let scoreCheck = {
         homeCheck: Q4HomeScore,
-        awayCheck: Q4AwayScore
+        awayCheck: Q4AwayScore,
+        quarter: 'q4'
       }
       selectWinner(game, scoreCheck)
     }
@@ -596,11 +600,11 @@ function selectWinner(game, scoreCheck) {
     console.log("win array", winnerArray);
     console.log("home score parse", homeData.length);
     console.log("away score parse", awayData.length);
-    highlightRedSquares(winnerArray, game);
+    highlightRedSquares(winnerArray, game, scoreCheck);
   }
 }
 
-function highlightRedSquares(winnerArray, game) {
+function highlightRedSquares(winnerArray, game, scoreCheck) {
   let homeArray = [];
   let awayArray = [];
   let redSquares = document.querySelectorAll(".question-box");
@@ -661,7 +665,7 @@ function highlightRedSquares(winnerArray, game) {
         child.classList.add("winningSquare");
       }
     }
-    recordWinner(game);
+    recordWinner(game, scoreCheck);
   }
 }
 
@@ -669,17 +673,24 @@ function highlightRedSquares(winnerArray, game) {
 
 let officialWins = []
 
-function recordWinner(game) {
+function recordWinner(game, scoreCheck) {
     //console.log('record winner data: ', game);
     
     let allTD = document.querySelectorAll('td')
     allTD.forEach((sq) => {
        if(sq.classList.contains('winningSquare') === true) {
-        //console.log('*** WINNER ****: ', sq.textContent)
+        console.log('*** WINNER ****: ', sq.textContent)
+        setTimeout(() => {
+          if(scoreCheck !== 0) {
+            let quarterCheck = document.querySelector(`.${scoreCheck.quarter}Winner`)
+            let sqWinner = sq.textContent
+            quarterCheck.innerHTML = sqWinner
+          }
+        }, 500)
+        
         officialWins.push(sq.textContent)
        }
     })
-    //console.log('Array Length: ', officialWins.length)
     if (officialWins.length <= 1 ) {
     winnerScoreBoard(officialWins, game);
   } else {
@@ -694,7 +705,7 @@ function recordWinner(game) {
    }
 }
 
-let q1Winner = document.querySelector('.q1Winner')
+    let q1Winner = document.querySelector('.q1Winner')
     let q2Winner = document.querySelector('.q2Winner')
     let q3Winner = document.querySelector('.q3Winner')
     let q4Winner = document.querySelector('.q4Winner')

@@ -470,6 +470,7 @@ document.querySelector('.X-box').classList.add('.xText');
       chooseGameHeader.classList.add('hide')
       //console.log("click", keyData);
       let scoreId = localStorage.getItem(keyData);
+      localStorage.setItem('selectedGame', scoreId)
       gameInfoByID(scoreId, globalOddsInfo, nflGames);
       //console.log(scoreId);
     };
@@ -709,15 +710,19 @@ function recordWinner(game, scoreCheck) {
     let q2Winner = document.querySelector('.q2Winner')
     let q3Winner = document.querySelector('.q3Winner')
     let q4Winner = document.querySelector('.q4Winner')
+    
 
 function winnerScoreBoard(officialWins, game) {
     //console.log('scoreboard data: ', game)
     //console.log(officialWins)
    officialWins.forEach((win) => {
-
+let gameStartedID = game.game.id
    
       if(game.game.status.short !== 'NS' && game.scores.away.quarter_2 === null && game.scores.home.quarter_2 === null) {
         q1HasStarted = true
+        if (!localStorage.getItem(`${gameStartedID}-q1HasStarted`)) {
+          localStorage.setItem(`${gameStartedID}-q1HasStarted`, q1HasStarted)
+        }
         q1Winner.innerHTML = ''
         q1Winner.innerHTML += win + '🏆'
         q2Winner.innerHTML = '🏆'
@@ -725,17 +730,26 @@ function winnerScoreBoard(officialWins, game) {
     q4Winner.innerHTML = '🏆'
       } else if (game.scores.away.quarter_2 !== null && game.scores.home.quarter_2 !== null && game.scores.away.quarter_3 === null && game.scores.home.quarter_3 === null) {
         q2HasStarted = true
+        if (!localStorage.getItem(`${gameStartedID}-q2HasStarted`)) {
+          localStorage.setItem(`${gameStartedID}-q2HasStarted`, q2HasStarted)
+        }
         q2Winner.innerHTML = ''
         q2Winner.innerHTML += win + '🏆'
     q3Winner.innerHTML = '🏆'
     q4Winner.innerHTML = '🏆'
       } else if (game.scores.away.quarter_3 !== null && game.scores.home.quarter_3 !== null && game.scores.away.quarter_4 === null && game.scores.home.quarter_4 === null) {
         q3HasStarted = true
+        if (!localStorage.getItem(`${gameStartedID}-q3HasStarted`)) {
+          localStorage.setItem(`${gameStartedID}-q3HasStarted`, q3HasStarted)
+        }
         q3Winner.innerHTML = ''
         q3Winner.innerHTML += win + '🏆'
     q4Winner.innerHTML = '🏆'
       } else if (game.scores.away.quarter_4 !== null && game.scores.home.quarter_4 !== null) {
         q4HasStarted = true
+        if (!localStorage.getItem(`${gameStartedID}-q4HasStarted`)) {
+          localStorage.setItem(`${gameStartedID}-q4HasStarted`, q4HasStarted)
+        }
         q4Winner.innerHTML = ''
         q4Winner.innerHTML += win + '🏆'
       } else {
@@ -794,6 +808,22 @@ function getGameData() {
   const userNameArr = JSON.parse(localStorage.getItem('userNameArr'))
   const oddsBoard = document.querySelector('#oddsCount')
 const boardFiller = document.querySelector('.oddsTitles')
+
+if(localStorage.getItem('selectedGame')) {
+  let selectedGameID = localStorage.getItem('selectedGame')
+  if (localStorage.getItem(`${selectedGameID}-q1HasStarted`)) {
+    q1HasStarted = true
+  }
+  if (localStorage.getItem(`${selectedGameID}-q2HasStarted`)) {
+    q2HasStarted = true
+  }
+  if (localStorage.getItem(`${selectedGameID}-q3HasStarted`)) {
+    q3HasStarted = true
+  }
+  if (localStorage.getItem(`${selectedGameID}-q4HasStarted`)) {
+    q4HasStarted = true
+  }
+}
 
    //console.log('parsed arr', userNameArr)
     if(!localStorage.getItem(`TR 1`)) {

@@ -17,7 +17,7 @@ console.log('FETCHING NFL DATA *******************************')
   const { formattedDate, timezoneName} = currentDate();
   console.log('fetch time info: ', formattedDate , timezoneName)
   // console.log(dateToday)
-    let nflAPI = `https://v1.american-football.api-sports.io/games?league=1&date=${formattedDate}&timezone=${timezoneName}`;
+    let nflAPI = `https://v1.american-football.api-sports.io/games?league=2&date=${formattedDate}&timezone=${timezoneName}`;
     console.log(nflAPI)
 
     try {

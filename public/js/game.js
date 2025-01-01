@@ -1,3 +1,4 @@
+import { currentDate } from "../fn-utils/helpers.js"
 
 const globalOddsInfo = {
   userNameArr: [],
@@ -115,7 +116,12 @@ return secondsUntilGame
 
 
 function getNflAPI(globalOddsInfo) {
-  let requestUrl = '/api/nflApiFetch'
+  const { formattedDate, timezoneName} = currentDate()
+  let date = formattedDate
+  let timezone = timezoneName
+  const timezoneSplit = timezone.split('/')
+  //
+  let requestUrl = `/api/nflApiFetch/userDate/${date}/userTimezone/${timezoneSplit[0]}/${timezoneSplit[1]}`
   fetch(requestUrl)
     .then(function (response) {
       return response.json();

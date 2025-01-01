@@ -102,13 +102,13 @@ function timeUntilGame(gameTime) {
     hourCycle: 'h23'
 });
 
-console.log('user time now: ', userTimeNow)
+// console.log('user time now: ', userTimeNow)
 const gameTimeSeconds = (gameTimeHours * 3600) + (gameTimeMinutes * 60)
 
 const currentTimeSeconds = (parseInt(userTimeNow.split(':')[0]) * 3600) + (parseInt(userTimeNow.split(':')[1]) * 60)
-console.log('seconds: ', currentTimeSeconds)
+// console.log('seconds: ', currentTimeSeconds)
 const secondsUntilGame = gameTimeSeconds - currentTimeSeconds
-console.log('until game: ', secondsUntilGame)
+// console.log('until game: ', secondsUntilGame)
 
 return secondsUntilGame
 

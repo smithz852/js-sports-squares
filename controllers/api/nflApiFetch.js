@@ -1,6 +1,5 @@
 
 const router = require("express").Router();
-const { currentDate } = require('../../utils/helpers.js');
 const { SelectedGame } = require('../../models')
 require('dotenv').config();
 
@@ -13,14 +12,10 @@ const activeTimers = new Map()
 
 router.get('/userDate/:date/userTimezone/:tzCountry/:tzCity', async (req, res) => {
 console.log('FETCHING NFL DATA *******************************')
-// use utils func to get current data and input it in the below URL
 let formattedDate = req.params.date
 let tzCountry = req.params.tzCountry
 let tzCity = req.params.tzCity
-console.log('fn date & tz param: ', formattedDate)
-  // const { timezoneName} = currentDate();
-  // console.log('fetch time info: ', formattedDate , timezoneName)
-  // console.log(dateToday)
+console.log('fn date param: ', formattedDate)
     let nflAPI = `https://v1.american-football.api-sports.io/games?league=2&date=${formattedDate}&timezone=${tzCountry}/${tzCity}`;
     console.log(nflAPI)
 

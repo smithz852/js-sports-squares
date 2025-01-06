@@ -10,6 +10,8 @@ let q2HasStarted = false
 let q3HasStarted = false
 let q4HasStarted = false
 
+let countdownDisplay = ''
+
 
 function refreshFetch(game, globalOddsInfo) {
   let keyData = `${game.teams.home.name}&${game.teams.away.name}`;
@@ -45,18 +47,24 @@ function gameInfoByID(scoreId, globalOddsInfo, nflGames) {
 
 function displayTimer(game) {
   let requestUrl = ''
-  const gamePlay = document.querySelector(".gamePlay");
+ 
   const timerDescr = document.querySelector(".timerDescr");
   //console.log('glob odds in timer: ',  globalOddsInfo)
   let scoreID = game.game.id
+  let gameTime = game.game.date.time
+    let start = timeUntilGame(gameTime)
+    
 
   if (game.game.status.short === "NS") {
     timerDescr.textContent = 'Kickof Time'
-    let gameTime = game.game.date.time
-    let start = timeUntilGame(gameTime)
+    
     //console.log('fetch for NS')
     //console.log('start time: ', start)
     requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${start}`
+  } else if (game.game.status.short === "NS" && start <= 0) {
+    timerDescr.textContent = 'Game Opening'
+    //console.log('normal fetch')
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
@@ -70,25 +78,66 @@ function displayTimer(game) {
       return response.json();
     })
     .then(function (data) {
-      // console.log("Timer: ", data);
+      console.log("Timer: ", data);
+      const secondsLeft = data.timeRemaining
+      let timeDelay = secondsLeft * 1000
+      if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
+        startCountdown(0)
+        return
+      }
+      console.log(timeDelay)
+      startCountdown(secondsLeft)
       
-        gamePlay.innerHTML = `${data.formattedTime}`;
+       
       
-      if (data.timeRemaining === 1) {
+      if (data.timeRemaining <= 1) {
         refreshFetch(game, globalOddsInfo);
         return
       }
+
+      setTimeout(() => {
+        if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
+          return
+        } else {
+          displayTimer(game)
+        }
+      }, timeDelay)
     });
 
-    setTimeout(() => {
-      if (game.game.status.short === "FT") { 
-        return
-      } else {
-        displayTimer(game)
-      }
-    }, 1000)
-
 }
+
+function formatTimeFromSeconds(totalSeconds) {
+  if (totalSeconds <= 0) return "0:00";
+
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  // Format without leading zeros for hours, but keep 2 digits for minutes and seconds
+  if (hours > 0) {
+      return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+// Example usage with countdown
+function startCountdown(startSeconds) {
+  let timeRemaining = startSeconds;
+  const gamePlay = document.querySelector(".gamePlay");
+  
+  const timer = setInterval(() => {
+      console.log(formatTimeFromSeconds(timeRemaining));
+      countdownDisplay = formatTimeFromSeconds(timeRemaining)
+      gamePlay.innerHTML = countdownDisplay;
+      if (timeRemaining <= 0) {
+        clearInterval(timer);
+        return;
+    }
+
+      timeRemaining--;
+  }, 1000);
+}
+
 
 function timeUntilGame(gameTime) {
   let date = new Date();
@@ -323,6 +372,10 @@ function renderGameInfo(game, globalOddsInfo ) {
     bigAway.textContent = `${game.teams.away.name}` || '0';
     imgLogo.classList.add('hide')
     scoreBoard.classList.remove('hide')
+
+    if (game.game.status.short === null) {
+      quarter.textContent = `${game.game.status.long}`;
+    }
     
     if (game.scores.home.total === null || game.scores.away.total === null) {
       homeScore.textContent = `TBD`;

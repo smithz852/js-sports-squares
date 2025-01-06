@@ -10,15 +10,12 @@ function currentDate() {
       // timeZoneName: 'short'
   });
 
-  const timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
   // Reformat to YYYY-MM-DD
   const [month, day, year] = dateToday.split('/');
   const formattedDate = `${year}-${month}-${day}`;
-  
-  console.log('timezone', timezoneName);
+
   console.log('Local date:', formattedDate);
-  return { formattedDate, timezoneName };
+  return { formattedDate };
 }
 
 

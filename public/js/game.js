@@ -81,6 +81,10 @@ function displayTimer(game) {
       console.log("Timer: ", data);
       const secondsLeft = data.timeRemaining
       let timeDelay = secondsLeft * 1000
+      if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
+        startCountdown(0)
+        return
+      }
       console.log(timeDelay)
       startCountdown(secondsLeft)
       
@@ -92,7 +96,7 @@ function displayTimer(game) {
       }
 
       setTimeout(() => {
-        if (game.game.status.short === "FT") { 
+        if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
           return
         } else {
           displayTimer(game)
@@ -368,6 +372,10 @@ function renderGameInfo(game, globalOddsInfo ) {
     bigAway.textContent = `${game.teams.away.name}` || '0';
     imgLogo.classList.add('hide')
     scoreBoard.classList.remove('hide')
+
+    if (game.game.status.short === null) {
+      quarter.textContent = `${game.game.status.long}`;
+    }
     
     if (game.scores.home.total === null || game.scores.away.total === null) {
       homeScore.textContent = `TBD`;

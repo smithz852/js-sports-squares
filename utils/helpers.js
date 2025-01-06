@@ -6,6 +6,7 @@ function currentDate() {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
+      timeZone: 'America/Los_Angeles'
       // timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       // timeZoneName: 'short'
   });

@@ -14,10 +14,10 @@ const activeTimers = new Map()
 router.get('/', async (req, res) => {
 console.log('FETCHING NFL DATA *******************************')
 // use utils func to get current data and input it in the below URL
-  const { formattedDate, timezoneName} = currentDate();
-  console.log('fetch time info: ', formattedDate , timezoneName)
+  const { formattedDate} = currentDate();
+  console.log('fetch time info: ', formattedDate )
   // console.log(dateToday)
-    let nflAPI = `https://v1.american-football.api-sports.io/games?league=2&date=${formattedDate}&timezone=${timezoneName}`;
+    let nflAPI = `https://v1.american-football.api-sports.io/games?league=1&date=${formattedDate}&timezone=America/Los_Angeles`;
     console.log(nflAPI)
 
     try {

@@ -30,7 +30,6 @@ function refreshFetch(game, globalOddsInfo) {
         console.log('refetched game: ', game)
         //console.log('global odds in refresh: ', globalOddsInfo)
        renderGameInfo(game, globalOddsInfo)
-       displayTimer(game)
       });
 }
 
@@ -68,7 +67,7 @@ function displayTimer(game) {
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
-   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${120}`
   }
 
 
@@ -88,16 +87,12 @@ function displayTimer(game) {
       console.log(timeDelay)
       startCountdown(secondsLeft)
       
-       
-      
-     
-
       setTimeout(() => {
         if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
           return
         } else {
           refreshFetch(game, globalOddsInfo);
-          displayTimer(game)
+          return
         }
       }, timeDelay)
     });
@@ -124,7 +119,7 @@ function startCountdown(startSeconds) {
   const gamePlay = document.querySelector(".gamePlay");
   
   const timer = setInterval(() => {
-      console.log(formatTimeFromSeconds(timeRemaining));
+      // console.log(formatTimeFromSeconds(timeRemaining));
       countdownDisplay = formatTimeFromSeconds(timeRemaining)
       gamePlay.innerHTML = countdownDisplay;
       if (timeRemaining <= 0) {

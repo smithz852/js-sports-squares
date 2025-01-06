@@ -90,15 +90,13 @@ function displayTimer(game) {
       
        
       
-      if (data.timeRemaining <= 1) {
-        refreshFetch(game, globalOddsInfo);
-        return
-      }
+     
 
       setTimeout(() => {
         if (game.game.status.short === "FT" || game.game.status.short === 'AOT') { 
           return
         } else {
+          refreshFetch(game, globalOddsInfo);
           displayTimer(game)
         }
       }, timeDelay)

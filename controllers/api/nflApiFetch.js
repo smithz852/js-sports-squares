@@ -95,9 +95,8 @@ console.log('FETCHING NFL DATA *******************************')
 function createTimer(score_id, start) {
   if (activeTimers.has(score_id)) {
       return activeTimers.get(score_id);
-  }
-
-  let timeRemaining = ''
+  } else {
+    let timeRemaining = ''
 
     timeRemaining = start;
     console.log(timeRemaining)
@@ -115,7 +114,7 @@ function createTimer(score_id, start) {
     activeTimers.set(score_id, timerData);
   console.log('****timerData:', timerData)
   return timerData;
-  
+  }  
 }
 
     router.get('/selectedGame/:score_id/timer/:start', async (req, res) => {

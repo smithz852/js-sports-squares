@@ -99,23 +99,6 @@ function createTimer(score_id, start) {
 
   let timeRemaining = ''
 
-  if (start === null) {
-    timeRemaining = 600; // 10 minutes
-    const timerData = {
-        timeRemaining,
-        startTime: Date.now(),
-        timerInterval: setInterval(() => {
-            timeRemaining--;
-            if (timeRemaining <= 0) {
-                clearInterval(timerData.timerInterval);
-                activeTimers.delete(score_id);
-            }
-        }, 1000)
-    };
-    activeTimers.set(score_id, timerData);
-  console.log('****timerData:', timerData)
-  return timerData;
-  } else {
     timeRemaining = start;
     console.log(timeRemaining)
     const timerData = {
@@ -132,8 +115,6 @@ function createTimer(score_id, start) {
     activeTimers.set(score_id, timerData);
   console.log('****timerData:', timerData)
   return timerData;
-  }
-
   
 }
 
@@ -147,12 +128,7 @@ function createTimer(score_id, start) {
           let timerData = activeTimers.get(score_id);
   
           // Create new timer if doesn't exist
-          if (!timerData && start === null) {
-            console.log('no timer data and null')
-              timerData = createTimer(score_id, null);
-          }
-          
-          if (!timerData && start !== null) {
+          if (!timerData) {
             console.log('no timer data and NOT null')
               timerData = createTimer(score_id, start);
           }

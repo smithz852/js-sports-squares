@@ -2,6 +2,8 @@
 
 ## Description
 
+Version with backend switched to PostgresSQL compatable. For the original version please visit [Here](https://github.com/KyleGru/sports-squares).
+
 Who doesn't like organized gambling? Sports Squares is a fun interactive application that lets you, the user, participate in the sports squares game. The game involves a grid divided into rows and columns, typically 10 by 10, resulting in 100 squares. One team is represented by the rows, and the other team is represented by columns. Squares can be purchased and users can select whatever squares they choose. Once all the squares are sold or when all players have purchased and selected squares to their liking. The game can begin!
 
 Numbers ranging from 0 to 9 are randomly assigned to the rows and columns. Each row and column will have a unique combination of numbers.
@@ -13,29 +15,21 @@ Participants who have squares corresponding to the last digit of the scores for 
 ## Installation
 
 Download the Github repository. From there do an npm install in the terminal and npm run start to get the server going on a port.
+Node.js and Heroku CLI are needed to run locally
 
 ## Usage
 
-Navigate to the website to begin by clicking the link below. Once there login or sign up for an account. Once you are logged in choose a game to play in. Select your squares before the sports event begins. Once the sports event starts the board is locked and numbers are revealed.
+Navigate to the website to begin by clicking the link below. Once there login or sign up for an account. Once you are logged in choose NFL games to launch the board. 
+
+Select your squares before the sports event begins. Then, use the buttons to generate the outside numbers at random. Once the board is setup, hit Start Game which will disable all buttons, except the reset button, and allow you to choose a game to play. Note, games are generated based on the current day and each day may not have a game available. The winners are then selected each quarter based on the last number of each score for the home and away team, and the square that matches those numbers on the grid which will be blinking green.
 
 ![alt text](./Assets/Screenshot%202024-02-12%20205338.png)
 
-https://sports-sq-fd69cbb2824b.herokuapp.com/
+Deployed Site via Heroku: [https://sports-sq-fd69cbb2824b.herokuapp.com/](https://football-sports-squares-c041155a91d0.herokuapp.com/)
 
 ## Tests
 
-Instruction Video: https://drive.google.com/file/d/1Co6Iaj8tKqd2fADmLnWLRillXwDRk92Y/view
-
-Steps:
-
-Go to https://sportsdata.io/
-
-* Login
-* Go to "Developers" tab and find SportsDataIO Replay
-* Click "Start Replay"
-* Select NFL, Week 12 or 14, and set the date to the available Monday with the time at 8:30 PM
-* Take newly generated API key and replace it in the repo's API folder for gameDateInfo.js, gamesAvailable.js, and sportFetch.js
-* Restart server and run game!
+N/A
 
 ## Credits
 

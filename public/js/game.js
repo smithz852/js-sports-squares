@@ -67,7 +67,7 @@ function displayTimer(game) {
   } else {
     timerDescr.textContent = 'Refresh Time'
     //console.log('normal fetch')
-   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${600}`
+   requestUrl = `/api/nflApiFetch/selectedGame/${scoreID}/timer/${601}`
   }
 
 
